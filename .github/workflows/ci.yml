@@ -11,7 +11,7 @@ jobs:
     strategy:
       # Duplicate changes to this matrix to 'poc_tests'
       matrix:
-        os: [ubuntu-latest, macos-11, windows-latest]
+        os: [ubuntu-latest, macos-13, windows-latest]
         python-version: ['3.9', '3.10']
         compiler: [""]
         include:
@@ -36,7 +36,7 @@ jobs:
       #     pythonVersion: $(python.version)
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v5.4
         with:
           python-version: ${{ matrix.python-version }}
           allow-prereleases: true
@@ -64,13 +64,14 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        python-version: ['3.12', '3.11', '3.10', '3.9', '3.8']
+        # Cannot install 3.12 on ubuntu-latest
+        python-version: ['3.11', '3.10', '3.9', '3.8']
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Set up Python from deadsnakes
-        uses: deadsnakes/action@v2.1.1  # Upgrading will cause test failures.
+        uses: deadsnakes/action@v3.2.0
         with:
           python-version: ${{ matrix.python-version }}
           debug: true
@@ -96,7 +97,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-11, windows-latest]
+        os: [ubuntu-latest, macos-13, windows-latest]
         python-version: ['3.10']
         include:
           - os: ubuntu-latest
@@ -159,7 +160,7 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-11, windows-latest]
+        os: [ubuntu-latest, macos-13, windows-latest]
         python-version: ['3.9']
 
     steps:
@@ -219,7 +220,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-11, windows-latest]
+        os: [ubuntu-latest, macos-13, windows-latest]
         python-version: ['3.10']
 
     steps:
@@ -253,7 +254,7 @@ jobs:
       # - template: azure-templates/python.yml
 
       - name: Install / Upgrade system requirements
-        run: sudo apt update && sudo apt install -y libclang-11-dev
+        run: sudo apt update && sudo apt install -y libclang-17-dev
 
       - name: Install / Upgrade Python requirements
         run: |
@@ -404,7 +405,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: '3.12'
 
       - name: Install / Upgrade system dependencies
         run: sudo apt update && sudo apt install -y valgrind
